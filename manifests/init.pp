@@ -14,7 +14,7 @@ class mysql-cluster(
     active_ip => $active_ip,
     passive_ip => $passive_ip,
     vip => $vip
-  } ->
+  } ~>
   class { 'mysql-cluster::deploy':
     active_host => $active_host,
     passive_host => $passive_host,

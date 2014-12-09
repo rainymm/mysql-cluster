@@ -17,7 +17,6 @@ class mysql-cluster::config(
     bind_address      => $bind_address,
     multicast_address => '239.1.1.2',
     debug             => true,
-	#require			  => Package['mysql-server'],
   }
 
   file { '/etc/corosync/mysql.config':
@@ -43,13 +42,17 @@ class mysql-cluster::config(
   }
 
 
-  file {'my.cnf':
-	name => '/etc/my.cnf',
-	owner => 'root',
-	group => 'root',
-	mode => '0644',
-	source => "puppet:///modules/${module_name}/my.cnf",
-#	require => Package['mysql-server'],
+  file {'mysql.cnf':
+    name => '/root/my.cnf',
+    mode => '0644',
+    source => "puppet:///modules/${module_name}/my.cnf",
+    notify => Exec['mv my.cnf'],
+    require => Package['mysql-server'],
   }
 
-}
+  exec {'mv my.cnf':
+   command => 'mv /root/my.cnf /etc/my.cnf',
+   path => ['usr/bin', 'usr/sbin', '/bin', '/sbin'],
+   require => File['mysql.cnf']
+  }  
+} 

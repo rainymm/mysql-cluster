@@ -6,7 +6,9 @@ class mysql-cluster::deploy(
   $disk =undef,
   $state = undef
 ) {
-  class { 'drbd': }
+  class { 'drbd':
+    notify => Drbd::Resource['drbd']
+  }
 
   drbd::resource { 'drbd':
     host1         => $active_host,
@@ -20,6 +22,7 @@ class mysql-cluster::deploy(
     verify_alg    => 'sha1',
     ha_primary    => $state,
     initial_setup => $state,
+    notify        => Drbd::Migration['/var/lib/mysql']
   }
 
   drbd::migration { '/var/lib/mysql':

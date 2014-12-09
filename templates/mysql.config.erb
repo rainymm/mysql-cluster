@@ -1,7 +1,7 @@
 property $id="cib-bootstrap-options" \
         stonith-enabled=false \
         no-quorum-policy=ignore
-primitive drbd ocf:linbit:drbd 
+primitive drbd ocf:linbit:drbd \
         params drbd_resource="drbd" \
         op start timeout="240s" interval="0" \
         op stop timeout="100s" interval="0" \
